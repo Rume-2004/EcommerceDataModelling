@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="EcommerceModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="EcommerceModelTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="EcommerceModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="EcommerceModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Staffs" EntityType="EcommerceModel.Staff" />
+          <EntitySet Name="Addresses" EntityType="EcommerceModel.Address" />
+          <EntitySet Name="Customers" EntityType="EcommerceModel.Customer" />
+          <AssociationSet Name="StaffAddress" Association="EcommerceModel.StaffAddress">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="AddressCustomer" Association="EcommerceModel.AddressCustomer">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <EntitySet Name="Shoes" EntityType="EcommerceModel.Shoe" />
+          <EntitySet Name="Clothes" EntityType="EcommerceModel.Clothes" />
+          <EntitySet Name="Languages" EntityType="EcommerceModel.Language" />
+          <EntitySet Name="Currencies" EntityType="EcommerceModel.Currency" />
+          <EntitySet Name="Accessories" EntityType="EcommerceModel.Accessories" />
+          <EntitySet Name="FaceBodies" EntityType="EcommerceModel.FaceBody" />
+          <EntitySet Name="Types" EntityType="EcommerceModel.Type" />
+          <EntitySet Name="Brands" EntityType="EcommerceModel.Brands" />
+          <AssociationSet Name="TypeCustomer" Association="EcommerceModel.TypeCustomer">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="BrandsClothes" Association="EcommerceModel.BrandsClothes">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Clothes" EntitySet="Clothes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" Nullable="false" />
+          <Property Name="lastName" Type="String" Nullable="false" />
+          <Property Name="Age" Type="String" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" />
+          <NavigationProperty Name="Addresses" Relationship="EcommerceModel.StaffAddress" FromRole="Staff" ToRole="Address" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HouseNumber" Type="String" Nullable="false" />
+          <Property Name="StreetName" Type="String" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" />
+          <Property Name="PostCode" Type="String" Nullable="false" />
+          <NavigationProperty Name="Staff" Relationship="EcommerceModel.StaffAddress" FromRole="Address" ToRole="Staff" />
+          <NavigationProperty Name="Customers" Relationship="EcommerceModel.AddressCustomer" FromRole="Address" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" Nullable="false" />
+          <Property Name="lastName" Type="String" Nullable="false" />
+          <Property Name="DateofBirth" Type="String" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" />
+          <NavigationProperty Name="Address1" Relationship="EcommerceModel.AddressCustomer" FromRole="Customer" ToRole="Address" />
+          <Property Name="SaleDiscount" Type="String" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" />
+          <NavigationProperty Name="Type1" Relationship="EcommerceModel.TypeCustomer" FromRole="Customer" ToRole="Type" />
+        </EntityType>
+        <Association Name="StaffAddress">
+          <End Type="EcommerceModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="EcommerceModel.Address" Role="Address" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="Address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AddressCustomer">
+          <End Type="EcommerceModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="EcommerceModel.Customer" Role="Customer" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Shoe">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Boots" Type="String" Nullable="false" />
+          <Property Name="Trainers" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clothes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Shirt" Type="String" Nullable="false" />
+          <Property Name="Dresses" Type="String" Nullable="false" />
+          <Property Name="Jeans" Type="String" Nullable="false" />
+          <Property Name="Trousers" Type="String" Nullable="false" />
+          <Property Name="Brands" Type="String" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="EcommerceModel.BrandsClothes" FromRole="Clothes" ToRole="Brands" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="English" Type="String" Nullable="false" />
+          <Property Name="French" Type="String" Nullable="false" />
+          <Property Name="German" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GBP" Type="String" Nullable="false" />
+          <Property Name="Euro" Type="String" Nullable="false" />
+          <Property Name="AmericanDollars" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Accessories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Jewellery" Type="String" Nullable="false" />
+          <Property Name="Scarves" Type="String" Nullable="false" />
+          <Property Name="Gloves" Type="String" Nullable="false" />
+          <Property Name="Sunglasses" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FaceBody">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Makeup" Type="String" Nullable="false" />
+          <Property Name="Fragrances" Type="String" Nullable="false" />
+          <Property Name="HairCare" Type="String" Nullable="false" />
+          <Property Name="SkinCare" Type="String" Nullable="false" />
+          <Property Name="BodyCare" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Men" Type="String" Nullable="false" />
+          <Property Name="Women" Type="String" Nullable="false" />
+          <Property Name="Boys" Type="String" Nullable="false" />
+          <Property Name="Girls" Type="String" Nullable="false" />
+          <Property Name="Babies" Type="String" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="EcommerceModel.TypeCustomer" FromRole="Type" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Brands">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Addidas" Type="String" Nullable="false" />
+          <Property Name="Nike" Type="String" Nullable="false" />
+          <Property Name="Bershka" Type="String" Nullable="false" />
+          <NavigationProperty Name="Clothes" Relationship="EcommerceModel.BrandsClothes" FromRole="Brands" ToRole="Clothes" />
+        </EntityType>
+        <Association Name="TypeCustomer">
+          <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="EcommerceModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BrandsClothes">
+          <End Type="EcommerceModel.Brands" Role="Brands" Multiplicity="1" />
+          <End Type="EcommerceModel.Clothes" Role="Clothes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clothes">
+              <PropertyRef Name="Brands" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="EcommerceModel" />
+        <Alias Key="Target" Value="EcommerceModel.Store" />
+        <EntityContainerMapping CdmEntityContainer="EcommerceModelContainer" StorageEntityContainer="EcommerceModelTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
