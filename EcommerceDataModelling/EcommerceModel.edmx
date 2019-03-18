@@ -40,6 +40,26 @@
             <End Role="Brands" EntitySet="Brands" />
             <End Role="Clothes" EntitySet="Clothes" />
           </AssociationSet>
+          <AssociationSet Name="TypeShoe" Association="EcommerceModel.TypeShoe">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="Shoe" EntitySet="Shoes" />
+          </AssociationSet>
+          <AssociationSet Name="BrandsShoe" Association="EcommerceModel.BrandsShoe">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Shoe" EntitySet="Shoes" />
+          </AssociationSet>
+          <AssociationSet Name="TypeFaceBody" Association="EcommerceModel.TypeFaceBody">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="FaceBody" EntitySet="FaceBodies" />
+          </AssociationSet>
+          <AssociationSet Name="TypeAccessories" Association="EcommerceModel.TypeAccessories">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="Accessories" EntitySet="Accessories" />
+          </AssociationSet>
+          <AssociationSet Name="TypeClothes" Association="EcommerceModel.TypeClothes">
+            <End Role="Type" EntitySet="Types" />
+            <End Role="Clothes" EntitySet="Clothes" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Staff">
           <Key>
@@ -110,6 +130,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Boots" Type="String" Nullable="false" />
           <Property Name="Trainers" Type="String" Nullable="false" />
+          <Property Name="Loafers" Type="String" Nullable="false" />
+          <Property Name="Sandals" Type="String" Nullable="false" />
+          <Property Name="Brands" Type="String" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" />
+          <NavigationProperty Name="Type1" Relationship="EcommerceModel.TypeShoe" FromRole="Shoe" ToRole="Type" />
+          <NavigationProperty Name="Brand" Relationship="EcommerceModel.BrandsShoe" FromRole="Shoe" ToRole="Brands" />
         </EntityType>
         <EntityType Name="Clothes">
           <Key>
@@ -122,6 +148,7 @@
           <Property Name="Trousers" Type="String" Nullable="false" />
           <Property Name="Brands" Type="String" Nullable="false" />
           <NavigationProperty Name="Brand" Relationship="EcommerceModel.BrandsClothes" FromRole="Clothes" ToRole="Brands" />
+          <NavigationProperty Name="Type" Relationship="EcommerceModel.TypeClothes" FromRole="Clothes" ToRole="Type" />
         </EntityType>
         <EntityType Name="Language">
           <Key>
@@ -150,6 +177,7 @@
           <Property Name="Scarves" Type="String" Nullable="false" />
           <Property Name="Gloves" Type="String" Nullable="false" />
           <Property Name="Sunglasses" Type="String" Nullable="false" />
+          <NavigationProperty Name="Type" Relationship="EcommerceModel.TypeAccessories" FromRole="Accessories" ToRole="Type" />
         </EntityType>
         <EntityType Name="FaceBody">
           <Key>
@@ -161,6 +189,7 @@
           <Property Name="HairCare" Type="String" Nullable="false" />
           <Property Name="SkinCare" Type="String" Nullable="false" />
           <Property Name="BodyCare" Type="String" Nullable="false" />
+          <NavigationProperty Name="Type" Relationship="EcommerceModel.TypeFaceBody" FromRole="FaceBody" ToRole="Type" />
         </EntityType>
         <EntityType Name="Type">
           <Key>
@@ -173,6 +202,10 @@
           <Property Name="Girls" Type="String" Nullable="false" />
           <Property Name="Babies" Type="String" Nullable="false" />
           <NavigationProperty Name="Customers" Relationship="EcommerceModel.TypeCustomer" FromRole="Type" ToRole="Customer" />
+          <NavigationProperty Name="Shoes" Relationship="EcommerceModel.TypeShoe" FromRole="Type" ToRole="Shoe" />
+          <NavigationProperty Name="FaceBodies" Relationship="EcommerceModel.TypeFaceBody" FromRole="Type" ToRole="FaceBody" />
+          <NavigationProperty Name="Accessories" Relationship="EcommerceModel.TypeAccessories" FromRole="Type" ToRole="Accessories" />
+          <NavigationProperty Name="Clothes" Relationship="EcommerceModel.TypeClothes" FromRole="Type" ToRole="Clothes" />
         </EntityType>
         <EntityType Name="Brands">
           <Key>
@@ -183,6 +216,7 @@
           <Property Name="Nike" Type="String" Nullable="false" />
           <Property Name="Bershka" Type="String" Nullable="false" />
           <NavigationProperty Name="Clothes" Relationship="EcommerceModel.BrandsClothes" FromRole="Brands" ToRole="Clothes" />
+          <NavigationProperty Name="Shoes" Relationship="EcommerceModel.BrandsShoe" FromRole="Brands" ToRole="Shoe" />
         </EntityType>
         <Association Name="TypeCustomer">
           <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
@@ -205,6 +239,66 @@
             </Principal>
             <Dependent Role="Clothes">
               <PropertyRef Name="Brands" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TypeShoe">
+          <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="EcommerceModel.Shoe" Role="Shoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Shoe">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BrandsShoe">
+          <End Type="EcommerceModel.Brands" Role="Brands" Multiplicity="*" />
+          <End Type="EcommerceModel.Shoe" Role="Shoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Shoe">
+              <PropertyRef Name="Brands" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TypeFaceBody">
+          <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="EcommerceModel.FaceBody" Role="FaceBody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FaceBody">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TypeAccessories">
+          <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="EcommerceModel.Accessories" Role="Accessories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Accessories">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TypeClothes">
+          <End Type="EcommerceModel.Type" Role="Type" Multiplicity="1" />
+          <End Type="EcommerceModel.Clothes" Role="Clothes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clothes">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
